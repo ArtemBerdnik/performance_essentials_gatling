@@ -12,7 +12,7 @@ object BasePage {
      http("Add a table to a cart")
        .post(addProductToCartUrl)
        .formParam("action", "ic_add_to_cart")
-       .formParam("add_cart_data", s"current_product=${_Id}&cart_content=&current_quantity=${Quantity}")
+       .formParam("add_cart_data", s"current_product=${_Id}&cart_content=&current_quantity=$Quantity")
        .formParam("cart_widget", "0")
        .formParam("cart_container", "0")
        .check(regex("Added!"))

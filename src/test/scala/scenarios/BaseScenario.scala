@@ -6,9 +6,8 @@ import io.gatling.http.Predef._
 import io.gatling.core.structure._
 
 object BaseScenario {
-
-  def scnBaseScneario: ScenarioBuilder = {
-    scenario("Basic scenario")
+  def scnEndToEnd: ScenarioBuilder = {
+    scenario("End-to-End scenario for Performance testing Essentials")
       .exec(flushHttpCache)
       .exec(flushCookieJar)
       .exitBlockOnFail(
@@ -24,16 +23,27 @@ object BaseScenario {
               .exec(api.TablesPage.addTableToCart())
               .exec(thinkTimer())
           }
-          .group("Cart page") {
+      )
+      .randomSwitch(
+        50.0 -> exitBlockOnFail(
+          group("Chairs page") {
+            exec(api.ChairsPage.open())
+              .exec(thinkTimer(5, 10))
+              .exec(api.ChairsPage.openRandomChair())
+              .exec(thinkTimer())
+              .exec(api.ChairsPage.addChairToCart())
+              .exec(thinkTimer())
+          }),
+        30.0 -> exitBlockOnFail(
+          group("Cart page") {
             exec(api.CartPage.open())
               .exec(thinkTimer())
               .exec(api.CartPage.placeOrder())
-              .exec(thinkTimer(10, 15))
+              //Give customers more time to think and fill required fields in
+              .exec(thinkTimer(20, 30))
           }
-          .group("Checkout page") {
-            exec(api.CheckoutPage.placeOrder())
-          }
-      )
+            .group("Checkout page") {
+              exec(api.CheckoutPage.placeOrder())
+            }))
   }
-
 }

@@ -1,6 +1,7 @@
 package api
 
 import config.BaseHelpers.defaultUrl
+import config.CssHelper.{PRODUCT_NAME_IN_CART, PRODUCT_PRICE_IN_CART}
 import io.gatling.core.Predef._
 import io.gatling.core.structure._
 import io.gatling.http.Predef._
@@ -11,18 +12,17 @@ object CartPage {
     exec(
       http("Open Cart page")
         .get(defaultUrl + "/cart")
-        .check(css("td[class='td-name']>a").saveAs("productNameInCart"))
-        .check(css("td[class='td-price']").saveAs("productPriceInCart"))
-    )
-      .exec(session => {
-        val productPriceInCart = session("productPriceInCart").as[String]
-        val productNameInCart = session("productNameInCart").as[String]
-        val expectedProductName = session("productName").as[String]
-        val expectedProductPrice = session("productPrice").as[String]
-        assert(productNameInCart.equals(expectedProductName), s"Expected: ${productNameInCart}. Actual ${expectedProductName}")
-        assert(productPriceInCart.equals(expectedProductPrice), s"Expected: ${productPriceInCart}. Actual ${expectedProductPrice}")
-        session
-      })
+        .check(css(PRODUCT_NAME_IN_CART).saveAs("productNameInCart"))
+        .check(css(PRODUCT_PRICE_IN_CART).saveAs("productPriceInCart"))
+    ).exec(session => {
+      val productPriceInCart = session("productPriceInCart").as[String]
+      val productNameInCart = session("productNameInCart").as[String]
+      val expectedProductName = session("productName").as[String]
+      val expectedProductPrice = session("productPrice").as[String]
+      assert(productNameInCart.equals(expectedProductName), s"Expected: $productNameInCart. Actual $expectedProductName")
+      assert(productPriceInCart.equals(expectedProductPrice), s"Expected: $productPriceInCart. Actual $expectedProductPrice")
+      session
+    })
   }
 
   def placeOrder(): ChainBuilder = {

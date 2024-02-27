@@ -14,7 +14,7 @@
         </encoder>
     </appender>
 
-    <logger name="io.gatling.http.engine.response" level="TRACE" />
+    <logger name="io.gatling.http.engine.response" level="DEBUG" />
     <logger name="io.gatling.http.action.ws.fsm" level="DEBUG" />
 
     <root level="INFO">

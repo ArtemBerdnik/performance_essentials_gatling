@@ -1,6 +1,7 @@
 package api
 
 import config.BaseHelpers.{defaultUrl, thankYouUrl}
+import config.CssHelper.PRODUCT_NAME
 import io.gatling.core.Predef._
 import io.gatling.core.structure._
 import io.gatling.http.Predef._
@@ -42,7 +43,7 @@ object CheckoutPage {
         .formParam("cart_s_comment", "")
         .formParam("cart_submit", "Place Order")
         .check(status.is(200))
-        .check(css("h1[class='entry-title']").is("Thank You"))
+        .check(css(PRODUCT_NAME).is("Thank You"))
     )
   }
 

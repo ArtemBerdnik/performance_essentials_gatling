@@ -10,6 +10,7 @@ object BaseHelpers {
   val defaultUrl = "http://localhost"
   val tablesUrl = defaultUrl + "/products-category/tables-2"
   val kitchenTablesUrl = defaultUrl + "/products/kitchen-table"
+  val modernChairsUrl = defaultUrl + "/products/modern-chair"
   val addProductToCartUrl = defaultUrl + "/wp-admin/admin-ajax.php"
   val thankYouUrl = defaultUrl + "/thank-you"
 

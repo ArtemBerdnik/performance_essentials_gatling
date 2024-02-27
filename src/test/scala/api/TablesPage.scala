@@ -2,6 +2,7 @@ package api
 
 import api.BasePage.addProductToCart
 import config.BaseHelpers.{defaultUrl, kitchenTablesUrl, tablesUrl}
+import config.CssHelper.{GET_ALL_KITCHEN_TABLES, PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE}
 import io.gatling.core.Predef._
 import io.gatling.core.structure._
 import io.gatling.http.Predef._
@@ -12,7 +13,8 @@ object TablesPage {
     exec(
       http("Open Tables page")
         .get(tablesUrl)
-        .check(css(s"a[href^='$kitchenTablesUrl']", "href").findAll.saveAs("allKitchenTables"))
+        //        .check(css(s"a[href^='$kitchenTablesUrl']", "href").findAll.saveAs("allKitchenTables"))
+        .check(css(GET_ALL_KITCHEN_TABLES, "href").findAll.saveAs("allKitchenTables"))
     )
   }
 
@@ -21,22 +23,22 @@ object TablesPage {
       // Retrieve the links foo kitchen tables from the session
       val links = session("allKitchenTables").as[Seq[String]]
       // Retrieve a random link to table
-      val randomLink = links(scala.util.Random.nextInt(links.size))
+      val randomLinkToTable = links(scala.util.Random.nextInt(links.size))
 
-      println(s"Random link: $randomLink")
+      println(s"Random link: $randomLinkToTable")
       // Update the session with the selected link
-      session.set("randomLink", randomLink)
+      session.set("randomLinkToTable", randomLinkToTable)
     })
       .exec(
         http("Open Random table card")
-          .get("${randomLink}")
+          .get("${randomLinkToTable}")
           .check(status.is(200))
-          .check(css("td[class*='price-value']").findAll
+          .check(css(PRODUCT_PRICE).findAll
             .transform((prices: Seq[String]) => prices.headOption.getOrElse("").replace("$", ""))
             .saveAs("productPrice"))
-          .check(css("input[name='current_product'][type='hidden']", "value").saveAs("productId"))
-          .check(css("h1[class='entry-title']").saveAs("productName"))
-    )
+          .check(css(PRODUCT_ID, "value").saveAs("productId"))
+          .check(css(PRODUCT_NAME).saveAs("productName"))
+      )
       .exec(session => {
         // Retrieve the price for the opened kitchen table
         val price = session("productPrice").as[String]
@@ -58,5 +60,4 @@ object TablesPage {
       addProductToCart("${productId}", "1")
     )
   }
-
 }
