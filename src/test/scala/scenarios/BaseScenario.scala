@@ -2,12 +2,17 @@ package scenarios
 
 import config.BaseHelpers.thinkTimer
 import io.gatling.core.Predef._
+import io.gatling.core.feeder.FeederBuilder
 import io.gatling.http.Predef._
 import io.gatling.core.structure._
 
 object BaseScenario {
+
+  val csvFeeder: FeederBuilder = csv("src/test/resources/feeders/cart_data.csv").random
+
   def scnEndToEnd: ScenarioBuilder = {
     scenario("End-to-End scenario for Performance testing Essentials")
+      .feed(csvFeeder)
       .exec(flushHttpCache)
       .exec(flushCookieJar)
       .exitBlockOnFail(

@@ -2,7 +2,7 @@ package simulations
 
 import config.BaseHelpers._
 import io.gatling.core.Predef._
-import scenarios.BaseScenario.{scnEndToEnd}
+import scenarios.BaseScenario.scnEndToEnd
 
 class PerfTestSimulation extends Simulation {
 

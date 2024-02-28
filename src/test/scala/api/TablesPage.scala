@@ -1,7 +1,7 @@
 package api
 
 import api.BasePage.addProductToCart
-import config.BaseHelpers.{defaultUrl, kitchenTablesUrl, tablesUrl}
+import config.BaseHelpers.tablesUrl
 import config.CssHelper.{GET_ALL_KITCHEN_TABLES, PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE}
 import io.gatling.core.Predef._
 import io.gatling.core.structure._
@@ -13,7 +13,6 @@ object TablesPage {
     exec(
       http("Open Tables page")
         .get(tablesUrl)
-        //        .check(css(s"a[href^='$kitchenTablesUrl']", "href").findAll.saveAs("allKitchenTables"))
         .check(css(GET_ALL_KITCHEN_TABLES, "href").findAll.saveAs("allKitchenTables"))
     )
   }
@@ -25,7 +24,7 @@ object TablesPage {
       // Retrieve a random link to table
       val randomLinkToTable = links(scala.util.Random.nextInt(links.size))
 
-      println(s"Random link: $randomLinkToTable")
+      println(s"Random link to a table: $randomLinkToTable")
       // Update the session with the selected link
       session.set("randomLinkToTable", randomLinkToTable)
     })

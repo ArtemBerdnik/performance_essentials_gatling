@@ -1,7 +1,7 @@
 package api
 
 import api.BasePage.addProductToCart
-import config.BaseHelpers.{defaultUrl, modernChairsUrl}
+import config.BaseHelpers.defaultUrl
 import config.CssHelper.{GET_ALL_CHAIRS, PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE}
 import io.gatling.core.Predef._
 import io.gatling.core.structure._
@@ -24,7 +24,7 @@ object ChairsPage {
       // Retrieve a random link to table
       val randomLinkToChair = links(scala.util.Random.nextInt(links.size))
 
-      println(s"Random link to chair: $randomLinkToChair")
+      println(s"Random link to a chair: $randomLinkToChair")
       // Update the session with the selected link
       session.set("randomLinkToChair", randomLinkToChair)
     })
