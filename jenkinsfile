@@ -14,8 +14,8 @@ stage("configure") {
 
 //  }
 stage("Run Gatling test") {
-  sh "/opt/homebrew/bin/mvn -f pom.xml -B clean package"
-  sh "/opt/homebrew/bin/mvn -f pom.xml gatling:test -DamountOfUsers=5"
+  sh "/opt/homebrew/bin/mvn -B clean package"
+  sh "/opt/homebrew/bin/mvn gatling:test -DamountOfUsers=5"
 }
 stage('publish results') {
   // sh "mv /tmp/reports/* $WORKSPACE/$BUILD_NUMBER/"
