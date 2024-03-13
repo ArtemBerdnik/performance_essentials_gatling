@@ -1,0 +1,25 @@
+node {
+  stage('clone git repo'){
+  git branch: 'jenkins_hw', url: 'https://github.com/ArtemBerdnik/performance_essentials_gatling.git'
+}
+
+stage("configure") {
+  sh "mkdir $WORKSPACE/$BUILD_NUMBER/"
+  sh "rm -rf /tmp/reports"
+}
+
+//  stage('run JMETER test'){
+//         sh "mkdir -p /tmp/reports"
+//         sh "/Users/Artem_Berdnik/Downloads/apache-jmeter-5.6.3/bin/jmeter -n -t src/test/jmeter/hw1/hw_1.jmx -l /tmp/reports/JMeter.jtl -e -o /tmp/reports/HtmlReport"
+
+//  }
+stage("Run Gatling test") {
+  sh "/opt/homebrew/bin/mvn -f $WORKSPACE/pom.xml -B clean package"
+  sh "/opt/homebrew/bin/mvn -f $WORKSPACE/pom.xml gatling:test -DamountOfUsers=5"
+}
+stage('publish results') {
+  // sh "mv /tmp/reports/* $WORKSPACE/$BUILD_NUMBER/"
+  // archiveArtifacts artifacts: "$BUILD_NUMBER/JMeter.jtl, $BUILD_NUMBER/HtmlReport/index.html"
+  gatlingArchive()
+}
+}
