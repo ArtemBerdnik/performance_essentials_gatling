@@ -1,12 +1,21 @@
-node {
-  stage('clone git repo'){
-  git branch: 'jenkins_hw', url: 'https://github.com/ArtemBerdnik/performance_essentials_gatling.git'
-}
+pipeline {
+  agent any
 
-stage("configure") {
-  sh "mkdir $WORKSPACE/$BUILD_NUMBER/"
-  sh "rm -rf /tmp/reports"
-}
+  tools {nodejs "node"}
+
+  stages {
+    stage('Clone Git Repo') {
+      steps {
+        git branch: 'jenkins_hw', url: 'https://github.com/ArtemBerdnik/performance_essentials_gatling.git'
+      }
+    }
+
+    stage("Configure") {
+      steps {
+        sh "mkdir $WORKSPACE/$BUILD_NUMBER/"
+        sh "rm -rf /tmp/reports"
+      }
+    }
 
  stage('run JMETER test'){
         sh "mkdir -p /tmp/reports"
@@ -24,10 +33,10 @@ stage('Run Lighthouse Test') {
         sh 'lighthouse --version'
         sh 'node $WORKSPACE/src/test/lighthouse/hw1/hw.js'
 }
-
 stage('publish results') {
   sh "mv /tmp/reports/* $WORKSPACE/$BUILD_NUMBER/"
   archiveArtifacts artifacts: "$BUILD_NUMBER/JMeter.jtl, $BUILD_NUMBER/HtmlReport/index.html, $WORKSPACE/performance_ess_lighthouse_hw.report.html"
   gatlingArchive()
 }
+  }
 }
