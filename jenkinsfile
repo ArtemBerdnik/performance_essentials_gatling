@@ -38,6 +38,8 @@ pipeline {
 
         stage('Run Lighthouse Test') {
             steps {
+                sh 'npm i puppeteer --save'
+                sh 'npm install -g lighthouse@9.6.8'
                 sh 'lighthouse --version'
                 sh 'node $WORKSPACE/src/test/lighthouse/hw1/hw.js'
             }
