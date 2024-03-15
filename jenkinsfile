@@ -18,6 +18,12 @@ stage("Run Gatling test") {
         env.PATH = "${env.PATH}:${env.M2_HOME}/bin"
         sh "mvn clean gatling:test -DamountOfUsers=5"
 }
+stage('Run Lighthouse Test') {
+     steps {
+          sh 'npm install -g lighthouse'
+          sh 'lighthouse http://localhost:your_port_number --output json --output-path report.json'
+     }
+ }
 stage('publish results') {
   sh "mv /tmp/reports/* $WORKSPACE/$BUILD_NUMBER/"
   archiveArtifacts artifacts: "$BUILD_NUMBER/JMeter.jtl, $BUILD_NUMBER/HtmlReport/index.html"
