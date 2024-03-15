@@ -12,29 +12,29 @@ pipeline {
             }
         }
 
-        stage("Configure") {
-            steps {
-                sh "mkdir $WORKSPACE/$BUILD_NUMBER/"
-                sh "rm -rf /tmp/reports"
-            }
-        }
+//         stage("Configure") {
+//             steps {
+//                 sh "mkdir $WORKSPACE/$BUILD_NUMBER/"
+//                 sh "rm -rf /tmp/reports"
+//             }
+//         }
 
-        stage('Run JMETER test') {
-            steps {
-                sh "mkdir -p /tmp/reports"
-                sh "/Users/Artem_Berdnik/Downloads/apache-jmeter-5.6.3/bin/jmeter -n -t src/test/jmeter/hw1/hw_1.jmx -l /tmp/reports/JMeter.jtl -e -o /tmp/reports/HtmlReport"
-            }
-        }
-
-        stage("Run Gatling test") {
-            steps {
-                script {
-                    env.M2_HOME = '/opt/homebrew/Cellar/maven/3.9.6/libexec'
-                    env.PATH = "${env.PATH}:${env.M2_HOME}/bin"
-                    sh "mvn clean gatling:test -DamountOfUsers=5"
-                }
-            }
-        }
+//         stage('Run JMETER test') {
+//             steps {
+//                 sh "mkdir -p /tmp/reports"
+//                 sh "/Users/Artem_Berdnik/Downloads/apache-jmeter-5.6.3/bin/jmeter -n -t src/test/jmeter/hw1/hw_1.jmx -l /tmp/reports/JMeter.jtl -e -o /tmp/reports/HtmlReport"
+//             }
+//         }
+//
+//         stage("Run Gatling test") {
+//             steps {
+//                 script {
+//                     env.M2_HOME = '/opt/homebrew/Cellar/maven/3.9.6/libexec'
+//                     env.PATH = "${env.PATH}:${env.M2_HOME}/bin"
+//                     sh "mvn clean gatling:test -DamountOfUsers=5"
+//                 }
+//             }
+//         }
 
         stage('Run Lighthouse Test') {
             steps {
