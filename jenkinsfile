@@ -28,9 +28,11 @@ pipeline {
 
         stage("Run Gatling test") {
             steps {
-                env.M2_HOME = '/opt/homebrew/Cellar/maven/3.9.6/libexec'
-                env.PATH = "${env.PATH}:${env.M2_HOME}/bin"
-                sh "mvn clean gatling:test -DamountOfUsers=5"
+                script {
+                    env.M2_HOME = '/opt/homebrew/Cellar/maven/3.9.6/libexec'
+                    env.PATH = "${env.PATH}:${env.M2_HOME}/bin"
+                    sh "mvn clean gatling:test -DamountOfUsers=5"
+                }
             }
         }
 
